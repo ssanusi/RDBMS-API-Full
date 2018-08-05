@@ -12,7 +12,12 @@ module.exports = {
     addPost ,
     getPostById,
     updatePost,
-    deletePost
+    deletePost,
+    getTags,
+    getTagById,
+    addTag,
+    updateTag,
+    deleteTag
     
 }
 
@@ -60,4 +65,25 @@ function updatePost(id,post){
 
 function deletePost(id){
     return db('posts').where({ id }).del()
+}
+
+//Query for Tags
+function getTags(){
+    return db('tags')
+}
+
+function getTagById(id){
+    return db('tags').where({ id })
+}
+
+function addTag (tag){
+   return db('tags').insert({ tag })
+}
+
+function updateTag(id,tag){
+    return db('tags').where({ id }).update({ tag })
+}
+
+function deleteTag(id){
+    return db('tags').where({ id }).del()
 }

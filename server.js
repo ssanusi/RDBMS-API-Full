@@ -69,7 +69,7 @@ app.delete('/users/:id', (req, res) => {
 
 //CRUD API for POSTS
 app.get('/posts', (req, res) => {
-    const users = db.getUsers()
+    const users = db.getPosts()
     users.then(
             response => { 
                 res.status(200).json(response)
@@ -126,7 +126,61 @@ app.delete('/posts/:id', (req, res) => {
 });
 
 //CRUD API for Tags
+app.get('/tags', (req, res) => {
+    db.getTags()
+        .then(
+            response => { 
+                res.status(200).json(response)
+            }
+        )
+        .catch(err => {
+            res.status(500).json({ error : err})
+        })
+});
 
+app.get('/tags/:id', (req, res) => {
+    const { id } = req.params
+   
+    db.getPostById(id)
+        .then( response => {
+        res.status(200).json(response)
+        })
+        .catch( err => {
+            res.status(500).json({error : err})
+        })
+});
+app.post('/tags', (req, res) => {
+    const { post , userId } = req.body
+    const post = { post , userId }
+    db.addTag(post)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({ error : err })
+        })
+});
+app.put('/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { tag } = req.body
+    db.updateTag(id, tag)
+        .then(response => {
+        res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error : err})
+        })
+});
+app.delete('/tags/:id', (req, res) => {
+    const { id } = req.params;
+    db.deleteTag(id)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error : err})
+        })
+});
 
 app.listen(8000, () => {
     console.log('app listening on port 8000!');
