@@ -12,7 +12,6 @@ app.get('/', (req, res) => {
 
 app.get('/users', (req, res) => {
     const users = db.getUsers()
-    console.log(users)
     users.then(
             response => { 
                 res.status(200).json(response)
@@ -23,13 +22,49 @@ app.get('/users', (req, res) => {
         })
 });
 
+app.get('/users/:id', (req, res) => {
+    const { id } = req.params
+    console.log(id)
+    db.getUserById(id)
+        .then( response => {
+        res.status(200).json(response)
+        })
+        .catch( err => {
+            res.status(500).json({error : err})
+        })
+    
+});
 app.post('/users', (req, res) => {
     const { name } = req.body
-    db.addUser( name )
+    db.addUser(name)
         .then(response => {
             res.status(200).json(response)
         })
-        .catch()
+        .catch(err => {
+            res.status(500).json({ error : err })
+        })
+});
+app.put('/users/:id', (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body
+    db.updateUser(id, name)
+        .then(response => {
+        res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error : err})
+        })
+});
+
+app.delete('/users/:id', (req, res) => {
+    const { id } = req.params;
+    db.deleteUser(id)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error : err})
+        })
 });
 
 
