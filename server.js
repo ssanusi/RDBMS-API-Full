@@ -6,13 +6,14 @@ const morgan = require('morgan')
 app.use(express.json());
 app.use(morgan('dev'));
 
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-
+//CRUD API for users
 app.get('/users', (req, res) => {
-    const users = db.getUsers()
-    users.then(
+   db.getUsers()
+        .then(
             response => { 
                 res.status(200).json(response)
             }
@@ -24,7 +25,6 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:id', (req, res) => {
     const { id } = req.params
-    console.log(id)
     db.getUserById(id)
         .then( response => {
         res.status(200).json(response)
@@ -67,6 +67,65 @@ app.delete('/users/:id', (req, res) => {
         })
 });
 
+//CRUD API for POSTS
+app.get('/posts', (req, res) => {
+    const users = db.getUsers()
+    users.then(
+            response => { 
+                res.status(200).json(response)
+            }
+        )
+        .catch(err => {
+            res.status(500).json({ error : err})
+        })
+});
+
+app.get('/posts/:id', (req, res) => {
+    const { id } = req.params
+   
+    db.getPostById(id)
+        .then( response => {
+        res.status(200).json(response)
+        })
+        .catch( err => {
+            res.status(500).json({error : err})
+        })
+    
+});
+app.post('/posts', (req, res) => {
+    const { post , userId } = req.body
+    const post = { post , userId }
+    db.addUser(post)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({ error : err })
+        })
+});
+app.put('/posts/:id', (req, res) => {
+    const { id } = req.params;
+    const { post } = req.body
+    db.updatePost(id, post)
+        .then(response => {
+        res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error : err})
+        })
+});
+app.delete('/posts/:id', (req, res) => {
+    const { id } = req.params;
+    db.deletePost(id)
+        .then(response => {
+            res.status(200).json(response)
+        })
+        .catch(err => {
+            res.status(500).json({error : err})
+        })
+});
+
+//CRUD API for Tags
 
 
 app.listen(8000, () => {

@@ -7,7 +7,13 @@ module.exports = {
     addUser,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getPosts,
+    addPost ,
+    getPostById,
+    updatePost,
+    deletePost
+    
 }
 
 
@@ -31,4 +37,27 @@ function updateUser(id,user){
 
 function deleteUser(id){
     return db('users').where({ id }).del()
+}
+// Query for Posts 
+function getPosts(){
+    return db('posts')
+}
+
+function getPostById(id){
+    return db('post').where({ id })
+}
+
+function addPost (post){
+   return db('posts').insert({
+       text : post.text,
+       userId : post.userId
+   })
+}
+
+function updatePost(id,post){
+    return db('posts').where({ id }).update({ text : post})
+}
+
+function deletePost(id){
+    return db('posts').where({ id }).del()
 }
